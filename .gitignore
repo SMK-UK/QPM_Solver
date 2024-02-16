@@ -4,7 +4,8 @@ Gui.py
 GUI_main.py
 gui_funcs.py
 frequency.png
-wavelength.py
+wavelength.png
+test.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__
