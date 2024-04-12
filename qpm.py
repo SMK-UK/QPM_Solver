@@ -13,14 +13,14 @@ from numpy import  array, linspace, round
 # specify units to work in
 input = 'freq'
 # reverse 'engineer' poling period using known QPM temperature
-find_P = False
+find_P = True
 # enter known polling periods [(e-wave), (o-wave)]
 P_known = [10.603212266659575, 9.046371465669914]
-T_find = 52.825          # Temperature of optimum conversion
+T_find = 53.96          # Temperature of optimum conversion
 T_0 = 20                # Room temp of sample (where polling period is usually quoted)
 alpha = 15.4E-6         # co-efficient of expansion for material
 # input frequencies (GHz) or wavelengths (um) to use
-units = [191654900, 303060900] # [1.55, 0.995] 
+units = [193375500, 301343200] # [1.55, 0.995] 
 # Sellmeier co-efficients 
 Alpha = [[5.756, 0.0983, 0.2020, 189.32, 12.52, 1.32E-2], [5.653, 0.1185, 0.2091, 89.61, 10.85, 1.97E-2]] 
 Beta =  [[2.860E-6, 4.700E-8, 6.113E-8, 1.516E-4], [7.941E-7, 3.134E-8, -4.641E-9, -2.188E-6]]
