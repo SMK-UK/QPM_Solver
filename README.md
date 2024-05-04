@@ -6,3 +6,4 @@
 
 - Calculate polling period if the optimum temperature for FWM is known.
 - Calculate optimum temperature if the polling period is known
+- Works for DFG and SFG

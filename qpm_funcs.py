@@ -12,7 +12,7 @@ from numpy import argmin, pi, sqrt
 
 c = 2.99792458E8
 
-def calculate_dk(period, k):
+def calculate_dk(period, k, mode='SFG'):
     '''
     Calculate the diffence in wavevectors
     
@@ -22,7 +22,12 @@ def calculate_dk(period, k):
         Wavevector array of waves mixing in the crystal
         
     '''
-    return (k[2] - k[1] - k[0]) - converter(period)
+    if mode == 'SFG':
+        sign = 1
+    else:
+        sign = -1
+        
+    return k[2] - sign*k[1] - k[0] - sign*converter(period)
 
 def calculate_k(wavelength:float, n_index:float):
     '''
@@ -97,7 +102,7 @@ def converter(unit):
      '''
     return (2*pi)/unit
 
-def create_lists(values:list[float], unit_type:str='freq' ):
+def create_lists(values:list[float], unit_type:str='freq', mode='SFG'):
     '''
     Create lists of frequency or wavelength data
     depending on user input
@@ -108,24 +113,28 @@ def create_lists(values:list[float], unit_type:str='freq' ):
         choose either 'freq' or 'wavelength'
     
     '''
+    if mode == 'SFG':
+        sign = 1
+    else:
+        sign = -1
     wave_list = []
     freq_list = []
     if unit_type == 'freq':
         for value in values:
             wave_list.append(c/value)
             freq_list.append(value)
-        wave_list.append(c/(sqrt((values[1]+values[0])**2)))
-        freq_list.append(values[0]+values[1])
+        wave_list.append(c/(sqrt((values[1]+sign*values[0])**2)))
+        freq_list.append(values[0]+sign*values[1])
     else:
         for value in values:
             wave_list.append(value)
             freq_list.append(c/value)
-        freq_list.append(sqrt((freq_list[1]+freq_list[0])**2))
+        freq_list.append(sqrt((freq_list[1]+sign*freq_list[0])**2))
         wave_list.append(c/(freq_list[2]))
 
     return wave_list, freq_list
 
-def find_P0(T_find, T, k, T_0, alpha):
+def find_P0(T_find, T, k, T_0, alpha, mode='SFG'):
     '''
     Find the polling period at room temperature
 
@@ -137,11 +146,11 @@ def find_P0(T_find, T, k, T_0, alpha):
         Wavevectors for the waves used in the mixing process
     
     '''
-    P = find_P(T_find, T, k)
+    P = find_P(T_find, T, k, mode=mode)
 
     return calculate_P0(period=P, T_find=T_find, T_0=T_0, alpha=alpha)
 
-def find_P(T_find:float, T:list[float], k_v:list[float]):
+def find_P(T_find:float, T:list[float], k_v:list[float], mode):
     '''
     Find the poling period for a given temperature using 
     calculated wavevectors. Uses the refractive indexes
@@ -156,14 +165,14 @@ def find_P(T_find:float, T:list[float], k_v:list[float]):
 
     '''
     # calculate k-mismatch
-    mismatch = k_mismatch(k_vectors=k_v)
+    mismatch = k_mismatch(k_vectors=k_v, mode=mode)
     # find index of phase-matched temperature
     if T_find >= min(T) and T_find <= max(T):
         where = argmin(abs(T-T_find))
 
     return converter(mismatch[where])
 
-def k_mismatch(k_vectors:list[float]):
+def k_mismatch(k_vectors:list[float], mode='SFG'):
     '''
     Return the k-vector mismatch for 3 waves
 
@@ -171,7 +180,12 @@ def k_mismatch(k_vectors:list[float]):
         list of wave vectors for 3 waves (1/um) 
     
     '''
-    return k_vectors[2] - k_vectors[1] - k_vectors[0]
+    if mode == 'SFG':
+        sign = 1
+    else:
+        sign = -1
+
+    return k_vectors[0] + sign*k_vectors[1] - k_vectors[2]
 
 def plot_mismatch(x, y, title):
     '''

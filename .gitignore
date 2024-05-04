@@ -1,10 +1,7 @@
 # folder specific files
-QPM.ipynb
-Gui.py
-GUI_main.py
 gui_funcs.py
-frequency.png
-wavelength.png
+GUI_main.py
+Gui.py
 test.ipynb
 
 # Byte-compiled / optimized / DLL files
