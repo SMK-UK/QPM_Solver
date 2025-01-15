@@ -8,7 +8,7 @@ GitHub: SMK-UK
 '''
 
 import matplotlib.pyplot as mp
-from numpy import argmin, pi, sqrt
+from numpy import argmin, meshgrid, pi, sqrt, where
 
 c = 2.99792458E8
 
@@ -27,7 +27,7 @@ def calculate_dk(period, k, mode='SFG'):
     else:
         sign = -1
         
-    return k[2] - sign*k[1] - k[0] - sign*converter(period)
+    return k[2] - k[0] - sign*k[1] - sign*converter(period)
 
 def calculate_k(wavelength:float, n_index:float):
     '''
@@ -170,7 +170,7 @@ def find_P(T_find:float, T:list[float], k_v:list[float], mode):
     if T_find >= min(T) and T_find <= max(T):
         where = argmin(abs(T-T_find))
 
-    return converter(mismatch[where])
+    return -converter(mismatch[where])
 
 def k_mismatch(k_vectors:list[float], mode='SFG'):
     '''
@@ -211,5 +211,19 @@ def plot_mismatch(x, y, title):
     QP_temp = x[argmin(abs(y))]
 
     print(f"Optimum Temperature = {QP_temp :.3f}")
+
+    return fig, ax
+
+def plot_sfg_cont(x, y, z, res, title):
+
+    x, y = meshgrid(x, y)
+
+    fig, ax = mp.subplots()
+
+    cont = ax.contour(x, y, z, res)
+    cbar = fig.colorbar(cont)
+    ax.set(title='QPM Temperature at 605.99nm')
+    ax.set(xlabel='SWIR Detuning kHz', ylabel='NIR Detuning kHz')
+
 
 
