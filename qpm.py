@@ -7,7 +7,7 @@ Date: 15/02/2024
 
 """
 
-import phase_matcher as qpm
+import QPM_Solver.QPMSolver as qpm
 from numpy import  array, linspace, round
 
 # specify units to work in

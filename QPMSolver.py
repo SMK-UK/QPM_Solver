@@ -187,7 +187,7 @@ def k_mismatch(k_vectors:list[float], mode='SFG'):
 
     return k_vectors[0] + sign*k_vectors[1] - k_vectors[2]
 
-def plot_mismatch(x, y, title):
+def plot_mismatch(x, y, title=''):
     '''
     Plot the k-vector mismatch and return the optimal phase matching temperature
     
